@@ -7,12 +7,11 @@ async function main() {
 
     const supabase = createClient(supabaseUrl, supabaseServiceRole);
 
-    const scrapeRoomEndpoint = "http://192.168.1.38:3001/scrape-room";
+    const scrapeRoomEndpoint = "http://hopeful-humpback-first.ngrok-free.app/scrape-room";
 
-    // Variável para controlar o número de requisições simultâneas
-    const concurrencyLimit = 1; // Defina o limite de concorrência desejado aqui
+    const concurrencyLimit = 1;
 
-    const startTime = Date.now(); // Marca o início do processo
+    const startTime = Date.now(); 
 
     try {
         const { data: rooms, error: supabaseError } = await supabase
@@ -77,10 +76,8 @@ async function main() {
                 } catch (error) {
                     console.error(`\x1b[31mRoom ${currentRoomId} erro: ${error.message}\x1b[0m`); // Cor vermelha para erro
                     try {
-                        // Tenta atualizar o status de falha no banco de dados
-                        const { error: updateError } = await supabase
-                            .from('rooms')
-                            .upsert({ id: currentRoomId, failed: true }, { onConflict: 'id', ignoreDuplicates: false });
+                 
+
                         if (updateError) {
                             console.error(`\x1b[33mErro ao atualizar status de falha para ${currentRoomId}: ${updateError.message}\x1b[0m`); // Cor amarela para erro de atualização
                         }
